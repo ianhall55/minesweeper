@@ -41,6 +41,10 @@ class Board
     row.each do |tile|
       if tile.revealed == false
         row_string << "  *"
+      elsif tile.value == :B
+        row_string << "  B"
+      elsif tile.value == :F
+        row_string << "  F"
       else
         row_string << "  _"
       end

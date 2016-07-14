@@ -15,13 +15,13 @@ class Minesweeper
       pos = get_move
       @board[pos].reveal
     end
-
+    @board.render
     puts "You won!" if won?
     puts "Game Over"
   end
 
   def won?
-    @board.spaces_revealed
+    @board.spaces_revealed?
   end
 
   def parse_input(input)
@@ -56,3 +56,6 @@ class Minesweeper
   end
 
 end
+
+mine = Minesweeper.new
+mine.run
