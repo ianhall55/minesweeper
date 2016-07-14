@@ -28,6 +28,14 @@ class Board
     end
   end
 
+  def bombs_revealed?
+    @grid.flatten.any? {|tile| tile.value == :B && tile.revealed == true }
+  end
+
+  def spaces_revealed?
+    @grid.flatten.all? { |tile| tile.value == :B || tile.revealed == true}
+  end
+
   def visual_row(row)
     row_string = ""
     row.each do |tile|
