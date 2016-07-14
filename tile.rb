@@ -10,5 +10,11 @@ class Tile
     @revealed = true
   end
 
-
+  def to_s
+    if @revealed == false
+      return "*"
+    else
+      return @value
+    end
+  end
 end
