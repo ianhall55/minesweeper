@@ -28,6 +28,7 @@ class Board
     end
   end
 
+
   def bombs_revealed?
     @grid.flatten.any? {|tile| tile.value == :B && tile.revealed == true }
   end
@@ -39,12 +40,12 @@ class Board
   def visual_row(row)
     row_string = ""
     row.each do |tile|
-      if tile.revealed == false
+      if tile.flagged == true
+        row_string << "  F"
+      elsif tile.revealed == false
         row_string << "  *"
       elsif tile.value == :B
         row_string << "  B"
-      elsif tile.value == :F
-        row_string << "  F"
       else
         row_string << "  _"
       end

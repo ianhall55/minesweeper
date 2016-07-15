@@ -12,12 +12,25 @@ class Minesweeper
   def run
     until game_over?
       board.render
-      pos = get_move
-      @board[pos].reveal
+      if move?
+        pos = get_move
+        @board[pos].reveal
+      else
+        pos = get_move
+        @board[pos].flag
+      end
     end
     @board.render
-    puts "You won!" if won?
+    won? ? (puts "You won!") : (puts "BOOM! You Lose")
+
     puts "Game Over"
+  end
+
+  def move?
+    move = false
+    puts "input 1 to flag a space, input 0 to uncover a space"
+    input = Integer(gets.chomp)
+    move = true if input == 0
   end
 
   def won?
