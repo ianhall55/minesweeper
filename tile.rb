@@ -13,7 +13,7 @@ class Tile
   end
 
   def flag
-    @flagged = true
+    @flagged = @flagged ? false : true
   end
 
   def to_s

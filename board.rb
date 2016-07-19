@@ -1,8 +1,15 @@
 require_relative "tile"
 require 'colorize'
+require 'byebug'
 
 class Board
   attr_accessor :grid, :tile, :all_values
+
+  DIRECTIONS = [
+    [-1,-1],[-1,0],[-1,1],
+    [0,-1],[0,1],[1,-1],
+    [1,0],[1,1]
+  ]
 
   def initialize
     @grid = Array.new(9) { Array.new(9) }
@@ -53,9 +60,6 @@ class Board
     num_bombs
   end
 
-
-
-
   def bombs_revealed?
     @grid.flatten.any? {|tile| tile.value == :B && tile.revealed == true }
   end
@@ -68,13 +72,26 @@ class Board
     row_string = ""
     row.each do |tile|
       if tile.flagged == true
-        row_string << "  F"
+        row_string << "  #{"F".pink}"
       elsif tile.revealed == false
         row_string << "  *"
       elsif tile.value == :B
         row_string << "  #{"B".red}"
       elsif tile.value > 0
-        row_string << "  #{tile.value.to_s}"
+        # str = "#{tile.value.to_s}"
+        case tile.value
+        when 1
+          row_string << "  #{tile.value.to_s.green}"
+        when 2
+          row_string << "  #{tile.value.to_s.blue}"
+        when 3
+          row_string << "  #{tile.value.to_s.red}"
+        when 4
+          row_string << "  #{tile.value.to_s.yellow}"
+        when 5
+          row_string << "  #{tile.value.to_s.red}"
+        end
+        # row_string << "  #{tile.value.to_s.green}"
       else
         row_string << "  _"
       end
@@ -112,6 +129,21 @@ class Board
   end
 
   def reveal_adjacent(pos)
+    # byebug
     x,y = pos
+    adj_spaces = []
+    DIRECTIONS.each do |dir|
+      adj = [x + dir[0], y + dir[1]]
+      next unless adj[0].between?(0,8) && adj[1].between?(0,8)
+      adj_spaces << adj if self[adj].revealed == false
+    end
+    if adj_spaces.none? {|adj_pos| self[adj_pos].value == :B}
+      adj_spaces.each do |adj_pos|
+        self[adj_pos].reveal
+        reveal_adjacent(adj_pos)
+      end
+    end
+
+
   end
 end

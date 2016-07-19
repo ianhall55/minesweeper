@@ -12,9 +12,10 @@ class Minesweeper
   def run
     until game_over?
       board.render
-      if move?
+      if move? == 0
         pos = get_move
         @board[pos].reveal
+        @board.reveal_adjacent(pos) unless @board[pos].value == :B
       else
         pos = get_move
         @board[pos].flag
@@ -28,9 +29,23 @@ class Minesweeper
 
   def move?
     move = false
-    puts "input 1 to flag a space, input 0 to uncover a space"
-    input = Integer(gets.chomp)
-    move = true if input == 0
+
+    begin
+      puts "input 0 to uncover a space, input 1 to flag a space"
+      input = Integer(gets.chomp)
+    rescue
+      print "invalid move, must be 0 or 1"
+      print "\n\n"
+      retry
+    end
+
+    unless input == 0 || input == 1
+      print "invalid move, must be 0 or 1"
+      print "\n\n"
+      move?
+    end
+
+    input
   end
 
   def won?
